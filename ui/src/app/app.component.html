@@ -1,0 +1,109 @@
+<div class="wrapper">
+  <div class="uppercontrols">
+    <label for="visualize-as">Visualize As: </label>
+    <select id="visualize-as" [formControl]="visualizeSelector">
+      <option value="list">List</option>
+      <option value="pie-chart">Pie chart</option>
+      <option value="bar-chart">Bar chart</option>
+    </select>
+    <div *ngIf="['pie-chart', 'bar-chart'].includes(visualizeSelector.value!)">
+      <label for="group-by">Group By: </label>
+      <select id="group-by" [formControl]="groupBySelector">
+        <option value="service">Service</option>
+        <option value="event_type">Event Type</option>
+        <option value="stop">Stop</option>
+        <option value="time">Time</option>
+      </select>
+    </div>
+    <span *ngIf="groupBySelector.value === 'time'">
+      <select
+        id="before-of"
+        [formControl]="beforeOfSelector"
+        (change)="getChartData()"
+      >
+        <option value="hour">Hour</option>
+        <option value="day">Day</option>
+        <option value="week">Week</option>
+        <option value="month">Month</option>
+      </select>
+      <p style="display: inline">&nbsp;of&nbsp;</p>
+      <select
+        id="after-of"
+        [formControl]="afterOfSelector"
+        (change)="getChartData()"
+      >
+        <option value="day">Day</option>
+        <option value="month">Month</option>
+        <option value="week">Week</option>
+        <option value="year">Year</option>
+      </select>
+    </span>
+  </div>
+  <div class="sidebar">
+    <label for="startDate">Start Date</label>
+    <br />
+    <input
+      type="datetime-local"
+      id="startDate"
+      [(ngModel)]="startDate"
+      (change)="getEvents()"
+    />
+    <br />
+    <br />
+    <label for="endDate">End Date</label>
+    <br />
+    <input
+      type="datetime-local"
+      id="endDate"
+      [(ngModel)]="endDate"
+      (change)="getEvents()"
+    />
+    <br />
+    <app-filter
+      *ngIf="serviceForm"
+      [filterForm]="serviceForm"
+      [filterArrayName]="'servicesArray'"
+      [filterArray]="servicesArray"
+      [filterText]="getServiceFormFilterButton()"
+      (onFilterChange)="getEvents()"
+      (onFilterClick)="handleServiceFilterClick($event)"
+      (onFilterHover)="setServiceHover($event)"
+    ></app-filter>
+    <br />
+    <app-filter
+      *ngIf="typeForm"
+      [filterForm]="typeForm"
+      [filterArrayName]="'typeArray'"
+      [filterArray]="typeArray"
+      [filterText]="getTypeFormFilterButton()"
+      (onFilterChange)="getEvents()"
+      (onFilterClick)="handleTypeFilterClick($event)"
+      (onFilterHover)="setTypeHover($event)"
+    >
+    </app-filter>
+    <br />
+    <app-filter
+      *ngIf="stopForm"
+      [filterForm]="stopForm"
+      [filterArrayName]="'stopArray'"
+      [filterArray]="stopArray"
+      [filterText]="getStopFormFilterButton()"
+      (onFilterChange)="getEvents()"
+      (onFilterClick)="handleStopFilterClick($event)"
+      (onFilterHover)="setStopHover($event)"
+    ></app-filter>
+  </div>
+  <main class="reports">
+    <app-event-list
+      *ngIf="visualizeSelector.value === 'list'"
+      [events]="events"
+    ></app-event-list>
+    <div *ngIf="visualizeSelector.value === 'pie-chart'"></div>
+    <div *ngIf="visualizeSelector.value === 'bar-chart'">
+      <plotly-plot
+        [data]="data"
+        [layout]="{ autosize: true, xaxis: { tickmode: 'linear' } }"
+      ></plotly-plot>
+    </div>
+  </main>
+</div>

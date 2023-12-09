@@ -1,0 +1,29 @@
+.wrapper {
+  display: inline-flex;
+  width: 100%;
+}
+
+.text {
+  align-self: start;
+}
+
+.filter-controls {
+  margin-left: auto;
+}
+
+:host {
+  width: 100%;
+  display: block;
+}
+
+:host:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+:host .filter-controls {
+  visibility: hidden;
+}
+
+:host:hover .filter-controls {
+  visibility: visible;
+}

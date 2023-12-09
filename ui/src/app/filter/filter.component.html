@@ -1,0 +1,22 @@
+<div [formGroup]="filterForm" class="wrapper">
+  <div [formArrayName]="filterArrayName">
+    <div *ngFor="let svc of filterArray.controls; let i = index">
+      <div style="display: flex">
+        <input
+          type="checkbox"
+          [formControl]="$any(svc).get('selected')"
+          (change)="handleFilterChange()"
+        />
+        <label style="flex-grow: 100">
+          <app-filter-entry
+            [text]="svc.get('name')!.value"
+            [filterText]="filterText"
+            [filter]="$any(svc).get('id')!.value"
+            (clickedFilter)="handleFilterClick($event)"
+            (hoveredFilter)="handleFilterHover($event)"
+          ></app-filter-entry>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

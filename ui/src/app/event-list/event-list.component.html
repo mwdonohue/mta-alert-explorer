@@ -1,0 +1,12 @@
+<div style="padding-left: 40px" *ngIf="events.length">
+  {{ events.length }} events
+</div>
+<ul>
+  <li *ngFor="let event of events">
+    <div *ngFor="let alert of event.alerts">
+      <strong>{{ alert.start_time | date : "short" }}</strong>
+      <p>{{ alert.message }}</p>
+    </div>
+    <br />
+  </li>
+</ul>

@@ -1,0 +1,24 @@
+.sidebar {
+  grid-area: sidebar;
+}
+
+.reports {
+  grid-area: content;
+}
+
+.topleft {
+  grid-area: topleft;
+}
+
+.uppercontrols {
+  grid-area: uppercontrols;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: min-content 100%;
+  grid-template-areas:
+    "sidebar uppercontrols"
+    "sidebar content";
+}
