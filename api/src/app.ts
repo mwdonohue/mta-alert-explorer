@@ -2,8 +2,9 @@ import express, { Express, Request, Response } from 'express'
 import 'dotenv/config'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import 'lodash'
-import _, { groupBy, difference, indexOf } from 'lodash'
+import _, { indexOf } from 'lodash'
 import bodyParser from 'body-parser'
+import Event from '../../common/dist/types/event'
 
 const app: Express = express()
 const uri = process.env.DB_CONNECTION_STRING
@@ -234,47 +235,9 @@ app.get('/types', async (req: Request, res: Response) => {
 })
 
 app.listen(3000, () => {
+  if (!process.env.DB_CONNECTION_STRING) {
+    console.log('Secrets not provided, exiting now')
+    process.exit(1)
+  }
   console.log(`Server is running at http://localhost:3000`)
 })
-
-class Event {
-  affected_services: Array<string>
-  affected_stops: Array<string>
-  alerts: Array<Alert>
-  created_time: number | Date
-  event_types: Array<string>
-}
-
-class Alert {
-  id: string
-  start_time: Date
-  end_time: Date
-  created_time: Date
-  updated_time: Date
-  affected_services: Array<string>
-  affected_stops: Array<string>
-  type: string
-  message: string
-
-  constructor(
-    id: string,
-    start_time: Date,
-    end_time: Date,
-    created_time: Date,
-    updated_time: Date,
-    affected_services: Array<string>,
-    affected_stops: Array<string>,
-    type: string,
-    message: string,
-  ) {
-    this.id = id
-    this.start_time = start_time
-    this.end_time = end_time
-    this.created_time = created_time
-    this.updated_time = updated_time
-    this.affected_services = affected_services
-    this.affected_stops = affected_stops
-    this.type = type
-    this.message = message
-  }
-}

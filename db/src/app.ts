@@ -4,6 +4,12 @@ import 'dotenv/config'
 import 'lodash'
 import { isEqual } from 'lodash'
 import { incident_lookup } from './const'
+import BaseAlert from '../../common/dist/types/alert'
+import Event from '../../common/dist/types/event'
+
+class Alert extends BaseAlert {
+  _id: ObjectId
+}
 
 const uri = process.env.DB_CONNECTION_STRING
 
@@ -141,6 +147,10 @@ const job = new SimpleIntervalJob({ seconds: 15, runImmediately: true }, task, {
 
 async function run() {
   try {
+    if (!process.env.DB_CONNECTION_STRING || !process.env.MTA_API_KEY) {
+      console.log('Secrets not provided, exiting now')
+      process.exit(1)
+    }
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect()
     // Send a ping to confirm a successful connection
@@ -158,46 +168,5 @@ run().then(() => {
 process.on('SIGINT', () => {
   scheduler.stop()
   console.log('Terminated')
+  process.exit(1)
 })
-
-class Event {
-  affected_services: Array<string>
-  affected_stops: Array<string>
-  alerts: Array<Alert>
-  created_time: number | Date
-  event_types: Array<string>
-}
-class Alert {
-  _id: ObjectId
-  id: string
-  start_time: number | Date
-  end_time: number | Date
-  created_time: number | Date
-  updated_time: number | Date
-  affected_services: Array<string>
-  affected_stops: Array<string>
-  type: Array<string>
-  message: string
-
-  constructor(
-    id: string,
-    start_time: number | Date,
-    end_time: number | Date,
-    created_time: number | Date,
-    updated_time: number | Date,
-    affected_services: Array<string>,
-    affected_stops: Array<string>,
-    type: Array<string>,
-    message: string,
-  ) {
-    this.id = id
-    this.start_time = start_time
-    this.end_time = end_time
-    this.created_time = created_time
-    this.updated_time = updated_time
-    this.affected_services = affected_services
-    this.affected_stops = affected_stops
-    this.message = message
-    this.type = type
-  }
-}
