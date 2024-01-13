@@ -6,6 +6,7 @@
         "declarationMap": true,
         "moduleResolution": "node",
         "outDir": "./dist",
-        "composite": true
+        "composite": true,
+        "lib": ["ES2021"]
     }
 }

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, forkJoin, map } from 'rxjs';
 import { stations } from './stations';
-import Event from 'common/types/event';
+import Event from '../../../common/types/event';
 
 @Component({
   selector: 'app-root',

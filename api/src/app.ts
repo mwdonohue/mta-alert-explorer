@@ -5,6 +5,7 @@ import 'lodash'
 import _, { indexOf } from 'lodash'
 import bodyParser from 'body-parser'
 import Event from '../../common/dist/types/event'
+import { incident_lookup } from './const'
 
 const app: Express = express()
 const uri = process.env.DB_CONNECTION_STRING
