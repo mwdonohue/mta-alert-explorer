@@ -8,11 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterEntryComponent } from './filter-entry/filter-entry.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { FilterComponent } from './filter/filter.component';
-import { PlotlyModule } from 'angular-plotly.js';
-import * as PlotlyJS from 'plotly.js-dist-min';
 import { CommonModule } from '@angular/common';
 
-PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +24,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    PlotlyModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

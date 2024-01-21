@@ -1,44 +1,4 @@
 <div class="wrapper">
-  <div class="uppercontrols">
-    <label for="visualize-as">Visualize As: </label>
-    <select id="visualize-as" [formControl]="visualizeSelector">
-      <option value="list">List</option>
-      <option value="pie-chart">Pie chart</option>
-      <option value="bar-chart">Bar chart</option>
-    </select>
-    <div *ngIf="['pie-chart', 'bar-chart'].includes(visualizeSelector.value!)">
-      <label for="group-by">Group By: </label>
-      <select id="group-by" [formControl]="groupBySelector">
-        <option value="service">Service</option>
-        <option value="event_type">Event Type</option>
-        <option value="stop">Stop</option>
-        <option value="time">Time</option>
-      </select>
-    </div>
-    <span *ngIf="groupBySelector.value === 'time'">
-      <select
-        id="before-of"
-        [formControl]="beforeOfSelector"
-        (change)="getChartData()"
-      >
-        <option value="hour">Hour</option>
-        <option value="day">Day</option>
-        <option value="week">Week</option>
-        <option value="month">Month</option>
-      </select>
-      <p style="display: inline">&nbsp;of&nbsp;</p>
-      <select
-        id="after-of"
-        [formControl]="afterOfSelector"
-        (change)="getChartData()"
-      >
-        <option value="day">Day</option>
-        <option value="month">Month</option>
-        <option value="week">Week</option>
-        <option value="year">Year</option>
-      </select>
-    </span>
-  </div>
   <div class="sidebar">
     <label for="startDate">Start Date</label>
     <br />
@@ -94,16 +54,6 @@
     ></app-filter>
   </div>
   <main class="reports">
-    <app-event-list
-      *ngIf="visualizeSelector.value === 'list'"
-      [events]="events"
-    ></app-event-list>
-    <div *ngIf="visualizeSelector.value === 'pie-chart'"></div>
-    <div *ngIf="visualizeSelector.value === 'bar-chart'">
-      <plotly-plot
-        [data]="data"
-        [layout]="{ autosize: true, xaxis: { tickmode: 'linear' } }"
-      ></plotly-plot>
-    </div>
+    <app-event-list [events]="events"></app-event-list>
   </main>
 </div>

@@ -41,5 +41,5 @@ process.on('SIGINT', async () => {
   scheduler.stop()
   await client.close()
   console.log('Terminated')
-  process.exit(1)
+  process.exit(0)
 })

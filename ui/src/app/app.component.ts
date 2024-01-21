@@ -20,11 +20,6 @@ export class AppComponent implements OnInit {
   typeHover?: string;
   stopForm!: FormGroup;
   stopHover?: string;
-  visualizeSelector = new FormControl('list');
-  groupBySelector = new FormControl('service');
-  beforeOfSelector = new FormControl('day');
-  afterOfSelector = new FormControl('week');
-  data: any;
   constructor(private httpClient: HttpClient, private fb: FormBuilder) {
     this.events = [];
     let observables = [this.getServices(), this.getTypes(), this.getStops()];
@@ -66,7 +61,7 @@ export class AppComponent implements OnInit {
             x.push(
               this.fb.group({
                 name: 'Untagged',
-                id: [],
+                id: ['Untagged'],
                 selected: true,
               })
             );
@@ -83,7 +78,7 @@ export class AppComponent implements OnInit {
               return this.fb.group({
                 name:
                   stations[stop]['stop_name'] +
-                  ' ' +
+                  ' | ' +
                   stations[stop]['routes'] +
                   ' | ' +
                   stations[stop]['borough'],
@@ -105,7 +100,6 @@ export class AppComponent implements OnInit {
         ),
       });
       this.getEvents();
-      // this.getChartData();
     });
   }
   ngOnInit(): void {
@@ -281,59 +275,6 @@ export class AppComponent implements OnInit {
       })
       .subscribe((events) => {
         this.events = events;
-      });
-    // this.getChartData();
-  }
-
-  getChartData() {
-    let url = 'http://localhost:3000/events?groupBy=';
-    if (this.groupBySelector.value === 'time') {
-      url +=
-        'time&of=' +
-        this.beforeOfSelector.value +
-        ',' +
-        this.afterOfSelector.value;
-    }
-    this.httpClient
-      .post<any>(url, {
-        startDate: new Date(this.startDate),
-        endDate: new Date(this.endDate),
-        services: this.serviceForm.value.servicesArray
-          .map((svcctrl: any) => {
-            if (svcctrl.selected === true) {
-              return svcctrl.id;
-            }
-          })
-          .filter((svc: any) => svc !== undefined),
-        types: this.typeForm.value.typeArray
-          .map((typecontrol: any) => {
-            if (typecontrol.selected === true) {
-              return typecontrol.id;
-            }
-          })
-          .filter((type: any) => type !== undefined),
-        stops: this.stopForm.value.stopArray
-          .map((typecontrol: any) => {
-            if (typecontrol.selected === true) {
-              return typecontrol.id;
-            }
-          })
-          .filter((type: any) => type !== undefined),
-      })
-      .pipe(
-        map((data) => {
-          let retval = [
-            { x: new Array<any>(), y: new Array<any>(), type: 'bar' },
-          ];
-          data.forEach((datum: any) => {
-            retval[0].x.push(datum._id);
-            retval[0].y.push(datum.count);
-          });
-          return retval;
-        })
-      )
-      .subscribe((data) => {
-        this.data = data;
       });
   }
 
