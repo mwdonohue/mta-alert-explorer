@@ -1,13 +1,17 @@
 package io.github.mwdonohue.api;
 
+import com.mongodb.client.MongoDatabase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class API {
+public class Application {
+
 
     public static void main(String[] args) {
-        SpringApplication.run(API.class, args);
+        SpringApplication.run(Application.class, args);
+
     }
 
 }
